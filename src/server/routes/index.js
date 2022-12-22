@@ -21,7 +21,6 @@ router.get("/api/current", function (req, res, next) {
 
   client.on("data", (data) => {
     client.destroy();
-    // return res.send(parseActiveOnDevice(data).toString());
     return res.json({ current: parseActiveOnDevice(data) });
   });
 });
