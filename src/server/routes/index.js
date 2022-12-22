@@ -15,7 +15,7 @@ import {
   parseActiveOnDevice,
 } from "../../utils/utils.js";
 
-router.get("/", function (req, res, next) {
+router.get("/api/current", function (req, res, next) {
   const client = new net.Socket();
 
   client.connect(PORT, HOST, () => {
@@ -24,11 +24,12 @@ router.get("/", function (req, res, next) {
 
   client.on("data", (data) => {
     client.destroy();
-    return res.send(parseActiveOnDevice(data).toString());
+    // return res.send(parseActiveOnDevice(data).toString());
+    return res.json({ current: parseActiveOnDevice(data) });
   });
 });
 
-router.post("/:target", function (req, res, next) {
+router.post("/api/setInput/:target", function (req, res, next) {
   const target = parseInt(req.params.target);
   if (typeof target !== "number" || target < 1 || target > 8) {
     return res.send("Outside range");
