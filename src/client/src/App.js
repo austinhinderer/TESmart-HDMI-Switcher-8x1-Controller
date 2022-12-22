@@ -26,7 +26,11 @@ function App() {
     const buttons = [];
 
     for (let i = 0, len = inputCount; i < len; i++) {
-      buttons.push(<button onClick={() => setInput(i + 1)}>{i + 1}</button>);
+      buttons.push(
+        <button key={i} onClick={() => setInput(i + 1)}>
+          {i + 1}
+        </button>
+      );
     }
 
     return buttons;
@@ -38,8 +42,8 @@ function App() {
 
   return (
     <div>
-      <header>{current}</header>
-      <div>{renderButtons(8)}</div>
+      <header data-testid="count">{current}</header>
+      <div data-testid="buttons">{renderButtons(8)}</div>
     </div>
   );
 }
