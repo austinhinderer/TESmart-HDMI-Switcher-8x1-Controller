@@ -1,6 +1,6 @@
-import express from 'express';
+import express from "express";
 const router = express.Router();
-import net from 'net';
+import net from "net";
 
 import {
   GET_INPUT_SOURCE,
@@ -8,27 +8,27 @@ import {
   PORT,
   SOURCE_MAP,
   SWITCH_INPUT_SOURCE,
-} from '../constants.js';
+} from "../../utils/constants.js";
 
 import {
   getBufferFromHexArray,
   parseActiveOnDevice,
-} from '../utils.js';
+} from "../../utils/utils.js";
 
-router.get('/', function(req, res, next) {
+router.get("/", function (req, res, next) {
   const client = new net.Socket();
 
   client.connect(PORT, HOST, () => {
     client.write(getBufferFromHexArray(GET_INPUT_SOURCE));
   });
 
-  client.on('data', (data) => {
+  client.on("data", (data) => {
     client.destroy();
     return res.send(parseActiveOnDevice(data).toString());
   });
 });
 
-router.post('/:target', function(req, res, next) {
+router.post("/:target", function (req, res, next) {
   const target = parseInt(req.params.target);
   if (typeof target !== "number" || target < 1 || target > 8) {
     return res.send("Outside range");
@@ -42,13 +42,13 @@ router.post('/:target', function(req, res, next) {
     client.write(getBufferFromHexArray(targetSource));
   });
 
-  client.on('data', (data) => {
+  client.on("data", (data) => {
     const previousOutput = parseActiveOnDevice(data);
 
     client.destroy();
     return res.send({
-      "current": target,
-      "prev": previousOutput,
+      current: target,
+      prev: previousOutput,
     });
   });
 });
