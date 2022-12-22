@@ -8,12 +8,9 @@ import {
   PORT,
   SOURCE_MAP,
   SWITCH_INPUT_SOURCE,
-} from "../../utils/constants.js";
+} from "../utils/constants.js";
 
-import {
-  getBufferFromHexArray,
-  parseActiveOnDevice,
-} from "../../utils/utils.js";
+import { getBufferFromHexArray, parseActiveOnDevice } from "../utils/utils.js";
 
 router.get("/api/current", function (req, res, next) {
   const client = new net.Socket();

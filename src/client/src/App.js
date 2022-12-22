@@ -1,22 +1,45 @@
-import "./App.css";
 import React, { useEffect, useState } from "react";
 
 function App() {
   const [current, setCurrent] = useState(null);
 
-  const getAssociations = () => {
+  const getCurrent = () => {
     fetch("/api/current")
       .then((result) => result.json())
       .then((body) => setCurrent(body.current));
   };
 
+  const setInput = (inputChannel) => {
+    fetch(`/api/setInput/${inputChannel}`, {
+      method: "POST",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setCurrent(data.current);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  const renderButtons = (inputCount) => {
+    const buttons = [];
+
+    for (let i = 0, len = inputCount; i < len; i++) {
+      buttons.push(<button onClick={() => setInput(i + 1)}>{i + 1}</button>);
+    }
+
+    return buttons;
+  };
+
   useEffect(() => {
-    getAssociations();
+    getCurrent();
   }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">{current}</header>
+    <div>
+      <header>{current}</header>
+      <div>{renderButtons(8)}</div>
     </div>
   );
 }
