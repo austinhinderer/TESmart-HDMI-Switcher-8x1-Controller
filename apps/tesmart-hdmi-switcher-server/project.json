@@ -1,0 +1,63 @@
+{
+  "name": "tesmart-hdmi-switcher-server",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/tesmart-hdmi-switcher-server/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/tesmart-hdmi-switcher-server",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "apps/tesmart-hdmi-switcher-server/src/main.ts",
+        "tsConfig": "apps/tesmart-hdmi-switcher-server/tsconfig.app.json",
+        "assets": ["apps/tesmart-hdmi-switcher-server/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "tesmart-hdmi-switcher-server:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "tesmart-hdmi-switcher-server:build:development"
+        },
+        "production": {
+          "buildTarget": "tesmart-hdmi-switcher-server:build:production"
+        }
+      }
+    },
+    "test": {
+      "options": {
+        "passWithNoTests": true
+      }
+    }
+  }
+}
